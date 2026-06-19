@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex Gamboa Junior — Python & IA Developer</title>
+<meta name="description" content="Desenvolvedor Python & IA. Automações inteligentes, sistemas SaaS e integração de LLMs. Disponível para vagas Python + IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#07070f;--s1:rgba(255,255,255,.04);--s2:rgba(255,255,255,.07);
+  --b:rgba(255,255,255,.09);--ba:rgba(99,102,241,.4);
+  --p:#6366f1;--p2:#8b5cf6;--cy:#06b6d4;--em:#10b981;--am:#f59e0b;
+  --tx:#f1f5f9;--mt:#94a3b8;--dk:#475569;
+  --gp:linear-gradient(135deg,#6366f1,#8b5cf6);
+  --gc:linear-gradient(135deg,#0891b2,#06b6d4);
+  --ge:linear-gradient(135deg,#059669,#10b981);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',-apple-system,sans-serif;overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.25rem,5vw,3.5rem);background:rgba(7,7,15,.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--b)}
+.nl{font-size:1rem;font-weight:800;background:var(--gp);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nm{display:flex;gap:1.75rem;list-style:none}
+.nm a{color:var(--mt);text-decoration:none;font-size:.83rem;font-weight:500;transition:color .2s}
+.nm a:hover{color:var(--tx)}
+.nb{padding:.42rem 1.1rem;border-radius:8px;background:var(--gp);color:#fff;text-decoration:none;font-size:.82rem;font-weight:600;transition:opacity .2s,transform .2s}
+.nb:hover{opacity:.85;transform:translateY(-1px)}
+
+/* ── CANVAS ── */
+#cv{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;pointer-events:none}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:6rem 1.5rem 4rem;background:transparent}
+.hg{background:rgba(7,7,15,.6);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid var(--b);border-radius:28px;padding:clamp(2.5rem,5vw,4.5rem) clamp(2rem,5vw,5rem);max-width:880px;width:100%}
+.eye{display:inline-flex;align-items:center;gap:.45rem;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.28);color:#a5b4fc;padding:.3rem 1rem;border-radius:20px;font-size:.78rem;font-weight:500;margin-bottom:1.75rem}
+.dp{width:8px;height:8px;border-radius:50%;background:var(--em);animation:dp 2s infinite}
+@keyframes dp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+.hero h1{font-size:clamp(2.6rem,7vw,4.5rem);font-weight:900;line-height:1.05;letter-spacing:-.025em;margin-bottom:1.25rem}
+.gp{background:var(--gp);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gc{background:linear-gradient(90deg,#06b6d4,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hs{color:var(--mt);font-size:clamp(.95rem,2.2vw,1.15rem);max-width:580px;margin:0 auto 2.5rem;line-height:1.75}
+.hb{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.bg{padding:.78rem 1.9rem;border-radius:10px;background:var(--gp);color:#fff;font-size:.93rem;font-weight:600;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.bg:hover{transform:translateY(-3px);box-shadow:0 0 30px rgba(99,102,241,.45)}
+.bo{padding:.78rem 1.9rem;border-radius:10px;background:transparent;border:1px solid var(--b);color:var(--tx);font-size:.93rem;font-weight:600;text-decoration:none;transition:border-color .2s,color .2s,transform .2s}
+.bo:hover{border-color:var(--p);color:var(--p);transform:translateY(-3px)}
+.hst{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--b)}
+.hsi .n{font-size:1.6rem;font-weight:800;background:var(--gp);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hsi .l{color:var(--mt);font-size:.75rem;margin-top:.15rem}
+
+/* ── SOBRE ── */
+.about-wrap{background:var(--bg);position:relative;z-index:1}
+.section{max-width:1200px;margin:0 auto;padding:7rem clamp(1.5rem,5vw,2.5rem)}
+.ey{color:var(--p);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+h2.st{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:800;letter-spacing:-.025em;margin-bottom:.75rem}
+.sd{color:var(--mt);max-width:520px;margin-bottom:3.5rem;line-height:1.75}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.at p{color:var(--mt);margin-bottom:1rem;line-height:1.8}
+.at strong{color:var(--tx)}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.sc{background:var(--s1);border:1px solid var(--b);border-radius:16px;padding:1.5rem;text-align:center;transition:border-color .3s,transform .3s}
+.sc:hover{border-color:var(--ba);transform:translateY(-3px)}
+.sc .num{font-size:1.9rem;font-weight:800;background:var(--gp);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sc .lbl{color:var(--mt);font-size:.77rem;margin-top:.3rem}
+.edu{margin-top:1.5rem;background:var(--s1);border:1px solid var(--b);border-radius:14px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem}
+.edu-icon{font-size:1.5rem}
+.edu h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}
+.edu p{color:var(--mt);font-size:.82rem;margin:0}
+
+/* ── BENTO GRID ── */
+.bg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+.bi{background:var(--s1);border:1px solid var(--b);border-radius:20px;padding:2rem;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.bi::before{content:'';position:absolute;inset:0;border-radius:20px;background:radial-gradient(circle at 20% 20%,rgba(99,102,241,.07),transparent 60%);opacity:0;transition:opacity .3s}
+.bi:hover{border-color:var(--ba);transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.bi:hover::before{opacity:1}
+.bi-py{grid-column:span 2}
+.bi-ap{grid-column:span 1}
+.bi-dt{grid-column:span 1}
+.bi-ia{grid-column:span 2}
+.bi-to{grid-column:span 2}
+.bic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+.ind{background:rgba(99,102,241,.15)}.cyn{background:rgba(6,182,212,.15)}.vio{background:rgba(139,92,246,.15)}.eme{background:rgba(16,185,129,.15)}.amb{background:rgba(245,158,11,.15)}
+.bi h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.bi p{color:var(--mt);font-size:.85rem;line-height:1.75}
+.pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
+.pill{font-size:.71rem;font-weight:500;padding:.22rem .65rem;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--b);color:var(--mt)}
+.pill.a{background:rgba(99,102,241,.14);border-color:rgba(99,102,241,.28);color:#a5b4fc}
+
+/* ── PROJECTS ── */
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.4rem}
+.pc{background:var(--s1);border:1px solid var(--b);border-radius:20px;padding:1.75rem;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s}
+.pc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .3s}
+.pc.lv::after{background:var(--ge)}.pc.pl::after{background:var(--gp)}.pc.at::after{background:var(--gc)}
+.pc:hover{transform:translateY(-5px);border-color:rgba(99,102,241,.32);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.pc:hover::after{opacity:1}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem}
+.ce{font-size:1.9rem}
+.cb{font-size:.69rem;font-weight:600;padding:.22rem .65rem;border-radius:20px}
+.bl{background:rgba(16,185,129,.12);color:var(--em);border:1px solid rgba(16,185,129,.25)}
+.bp{background:rgba(99,102,241,.12);color:#a5b4fc;border:1px solid rgba(99,102,241,.25)}
+.ba2{background:rgba(139,92,246,.12);color:#c4b5fd;border:1px solid rgba(139,92,246,.25)}
+.bu{background:rgba(245,158,11,.12);color:var(--am);border:1px solid rgba(245,158,11,.25)}
+.pc h3{font-size:1.12rem;font-weight:700;margin-bottom:.5rem}
+.pc p{color:var(--mt);font-size:.85rem;line-height:1.75;flex-grow:1;margin-bottom:1.15rem}
+.ct{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem}
+.ct span{font-size:.7rem;padding:.18rem .52rem;border-radius:4px;background:rgba(255,255,255,.05);border:1px solid var(--b);color:var(--mt)}
+.csk{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.3rem}
+.sk{font-size:.73rem;color:var(--em);display:flex;align-items:center;gap:.22rem}
+.sk::before{content:'✓';font-weight:700}
+.cl{display:flex;gap:.9rem}
+.cla{font-size:.8rem;color:var(--p);text-decoration:none;display:flex;align-items:center;gap:.28rem;transition:opacity .2s}
+.cla:hover{opacity:.6}
+.clm{font-size:.8rem;color:var(--dk);display:flex;align-items:center;gap:.28rem}
+
+/* ── DASHBOARD DEMO ── */
+.dd{background:rgba(255,255,255,.03);border:1px solid var(--b);border-radius:24px;padding:2rem;backdrop-filter:blur(24px)}
+.dg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem}
+.dc{background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:16px;padding:1.25rem;backdrop-filter:blur(10px);transition:border-color .3s,transform .3s}
+.dc:hover{border-color:var(--ba);transform:translateY(-2px)}
+.dm{font-size:1.85rem;font-weight:800;letter-spacing:-.02em}
+.dml{color:var(--mt);font-size:.78rem;margin-top:.2rem}
+.dmc{font-size:.75rem;color:var(--em);display:inline-flex;align-items:center;gap:.2rem;background:rgba(16,185,129,.1);padding:.15rem .5rem;border-radius:4px;margin-top:.5rem}
+.dca{grid-column:span 3;background:rgba(255,255,255,.03);border:1px solid var(--b);border-radius:16px;padding:1.5rem}
+.dca h4{font-size:.85rem;font-weight:600;color:var(--mt);margin-bottom:1.25rem}
+
+/* ── SMART HOME DEMO ── */
+.sh-demo{background:var(--s1);border:1px solid var(--b);border-radius:24px;padding:2rem;overflow:hidden;transition:background .8s}
+.sh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.sh-card{background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:18px;padding:1.5rem;backdrop-filter:blur(16px);transition:border-color .3s,transform .3s}
+.sh-card:hover{border-color:var(--ba);transform:translateY(-3px)}
+.sh-card .sh-icon{font-size:2rem;margin-bottom:.75rem}
+.sh-card h4{font-size:.9rem;font-weight:600;margin-bottom:.4rem}
+.sh-card .sh-val{font-size:2rem;font-weight:800;margin-bottom:.9rem;transition:all .5s}
+.sh-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.1);outline:none;cursor:pointer;margin-top:.5rem}
+.sh-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gp);background:linear-gradient(135deg,#6366f1,#8b5cf6);cursor:pointer;box-shadow:0 0 12px rgba(99,102,241,.5);transition:transform .2s}
+.sh-slider::-webkit-slider-thumb:hover{transform:scale(1.25)}
+.sh-label{color:var(--mt);font-size:.78rem}
+.sh-toggle{display:flex;align-items:center;gap:.75rem;margin-top:.75rem}
+.toggle-btn{width:48px;height:26px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid var(--b);cursor:pointer;position:relative;transition:background .3s}
+.toggle-btn.on{background:var(--em)}
+.toggle-btn::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .3s}
+.toggle-btn.on::after{transform:translateX(22px)}
+.sh-status{font-size:.78rem;color:var(--mt);margin-top:.3rem}
+
+/* ── TECH ── */
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.85rem}
+.ti{background:var(--s1);border:1px solid var(--b);border-radius:12px;padding:1.1rem .75rem;text-align:center;transition:transform .2s,border-color .2s}
+.ti:hover{transform:translateY(-3px);border-color:var(--ba)}
+.ti .ico{font-size:1.6rem;margin-bottom:.4rem}
+.ti .nm{font-size:.75rem;color:var(--mt)}
+
+/* ── GITHUB ── */
+.ghr{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.75rem}
+.rp{background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:12px;padding:1rem;transition:border-color .25s}
+.rp:hover{border-color:var(--ba)}
+.rn{font-size:.84rem;font-weight:600;color:var(--p);margin-bottom:.25rem}
+.rd{font-size:.77rem;color:var(--mt)}
+.rl{display:inline-flex;align-items:center;gap:.28rem;font-size:.7rem;color:var(--dk);margin-top:.5rem}
+.ld{width:7px;height:7px;border-radius:50%}
+
+/* ── CONTACT ── */
+.cbx{background:var(--s1);border:1px solid var(--b);border-radius:24px;padding:4rem 2.5rem;text-align:center;max-width:640px;margin:0 auto;position:relative;overflow:hidden}
+.cbx::before{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,.06),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cbx h2{font-size:2rem;font-weight:800;margin-bottom:.75rem;position:relative}
+.cbx p{color:var(--mt);margin-bottom:2rem;position:relative}
+.cl2{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--b);padding:1.75rem;text-align:center;color:var(--dk);font-size:.8rem;position:relative;z-index:1;background:var(--bg)}
+
+/* ── ANIMATIONS ── */
+.fu{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.fu.vs{opacity:1;transform:translateY(0)}
+.fl{opacity:0;transform:translateX(-24px);transition:opacity .7s ease,transform .7s ease}
+.fl.vs{opacity:1;transform:translateX(0)}
+.stg>*{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+.stg.vs>*:nth-child(1){opacity:1;transform:translateY(0);transition-delay:.04s}
+.stg.vs>*:nth-child(2){opacity:1;transform:translateY(0);transition-delay:.12s}
+.stg.vs>*:nth-child(3){opacity:1;transform:translateY(0);transition-delay:.2s}
+.stg.vs>*:nth-child(4){opacity:1;transform:translateY(0);transition-delay:.28s}
+.stg.vs>*:nth-child(5){opacity:1;transform:translateY(0);transition-delay:.36s}
+.stg.vs>*:nth-child(6){opacity:1;transform:translateY(0);transition-delay:.44s}
+.stg.vs>*:nth-child(n+7){opacity:1;transform:translateY(0);transition-delay:.52s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .bg-grid{grid-template-columns:1fr 1fr}
+  .bi-py,.bi-ia,.bi-to{grid-column:span 2}
+  .bi-ap,.bi-dt{grid-column:span 1}
+  .dg{grid-template-columns:1fr 1fr}
+  .dca{grid-column:span 2}
+  .sh-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nm{display:none}
+  .bg-grid{grid-template-columns:1fr}
+  .bi-py,.bi-ap,.bi-dt,.bi-ia,.bi-to{grid-column:span 1}
+  .dg{grid-template-columns:1fr}
+  .dca{grid-column:span 1}
+  .ag{grid-template-columns:1fr}
+  .sh-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <span class="nl">Alex Gamboa</span>
+  <ul class="nm">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#demos">Demos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="mailto:alexsandrojgj83@gmail.com" class="nb">Fale comigo</a>
+</nav>
+
+<!-- ── THREE.JS CANVAS ── -->
+<canvas id="cv"></canvas>
+
+<!-- ══════════════════════════ HERO ══════════════════════════ -->
+<section class="hero">
+  <div class="hg fu">
+    <div class="eye"><span class="dp"></span>Disponível para novas oportunidades</div>
+    <h1>
+      <span class="gp">Alex Gamboa Junior</span><br>
+      <span class="gc">Python &amp; IA Developer</span>
+    </h1>
+    <p class="hs">Estudante de Engenharia de Software. Especialista em automações inteligentes, APIs, dados com Pandas/SQL e integração de IA Generativa. Transformo processos manuais em soluções escaláveis com Python.</p>
+    <div class="hb">
+      <a href="#projetos" class="bg">Ver Projetos</a>
+      <a href="https://github.com/AlexGamboaJr" target="_blank" rel="noopener" class="bo">GitHub</a>
+      <a href="mailto:alexsandrojgj83@gmail.com" class="bo">Contato</a>
+    </div>
+    <div class="hst">
+      <div class="hsi"><div class="n">3+</div><div class="l">Projetos em produção</div></div>
+      <div class="hsi"><div class="n">2+</div><div class="l">Anos desenvolvendo</div></div>
+      <div class="hsi"><div class="n">IA</div><div class="l">Gemini · OpenAI · RAG</div></div>
+      <div class="hsi"><div class="n">SaaS</div><div class="l">Railway · Supabase</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ SOBRE ══════════════════════════ -->
+<div class="about-wrap" id="sobre">
+<section class="section">
+  <p class="ey fu">// Sobre mim</p>
+  <h2 class="st fu">Quem sou eu</h2>
+  <div class="ag">
+    <div class="at fl">
+      <p>Desenvolvedor com foco em <strong>automações Python</strong> e <strong>integração de IA Generativa</strong> para resolver problemas reais de negócio. Construo sistemas completos — do backend ao frontend, do local ao deploy em produção na nuvem.</p>
+      <p>Atuo principalmente em operações de <strong>call center e cobrança</strong>, criando ferramentas que substituem processos manuais por fluxos automáticos e inteligentes. Já implantei soluções com Google Gemini para transcrição e avaliação de ligações em tempo real.</p>
+      <p>Também construí um <strong>SaaS completo para barbearias</strong> com chatbot no WhatsApp, agendamento integrado ao Google Calendar e painel administrativo multi-unidades — tudo em produção.</p>
+      <div class="edu">
+        <div class="edu-icon">🎓</div>
+        <div>
+          <h4>Engenharia de Software</h4>
+          <p>Cursando — focado em desenvolvimento backend, IA e sistemas distribuídos</p>
+        </div>
+      </div>
+    </div>
+    <div class="sg fu">
+      <div class="sc"><div class="num">Python</div><div class="lbl">Linguagem principal</div></div>
+      <div class="sc"><div class="num">FastAPI</div><div class="lbl">Framework de APIs</div></div>
+      <div class="sc"><div class="num">Gemini</div><div class="lbl">IA em produção</div></div>
+      <div class="sc"><div class="num">Railway</div><div class="lbl">Deploy na nuvem</div></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════════════ SKILLS — BENTO GRID ══════════════════════════ -->
+<section id="skills" class="section">
+  <p class="ey fu">// Core Skills</p>
+  <h2 class="st fu">4 pilares do meu trabalho</h2>
+  <p class="sd fu">Cada projeto que entrego combina essas competências para criar soluções que realmente funcionam em produção.</p>
+
+  <div class="bg-grid stg">
+
+    <div class="bi bi-py">
+      <div class="bic ind">🐍</div>
+      <h3>Python</h3>
+      <p>Linguagem principal há mais de 2 anos. Automatizo fluxos complexos de cobrança e call center, construo backends com ThreadingHTTPServer e FastAPI, e processo grandes volumes de dados com pipelines robustos.</p>
+      <div class="pills">
+        <span class="pill a">FastAPI</span><span class="pill a">asyncio</span>
+        <span class="pill">ThreadingHTTPServer</span><span class="pill">SQLite WAL</span>
+        <span class="pill">Multipart parsing</span><span class="pill">Docker</span>
+      </div>
+    </div>
+
+    <div class="bi bi-ap">
+      <div class="bic cyn">🔌</div>
+      <h3>APIs &amp; Integrações</h3>
+      <p>REST APIs completas com autenticação JWT, chunked upload, integração com WhatsApp, Google Calendar, Twilio, Supabase e serviços de IA.</p>
+      <div class="pills">
+        <span class="pill a">REST</span><span class="pill a">JWT</span>
+        <span class="pill">Twilio</span><span class="pill">WhatsApp API</span>
+        <span class="pill">Supabase</span>
+      </div>
+    </div>
+
+    <div class="bi bi-dt">
+      <div class="bic vio">📊</div>
+      <h3>Dados &amp; SQL</h3>
+      <p>ETL completo com Pandas, modelagem relacional, relatórios automatizados e dashboards Power BI com indicadores de operações.</p>
+      <div class="pills">
+        <span class="pill a">Pandas</span><span class="pill a">SQL</span>
+        <span class="pill">PostgreSQL</span><span class="pill">Power BI</span>
+        <span class="pill">SQLite</span>
+      </div>
+    </div>
+
+    <div class="bi bi-ia">
+      <div class="bic eme">🤖</div>
+      <h3>IA Generativa &amp; Automação</h3>
+      <p>LLMs em produção para transcrição de áudio, avaliação de qualidade e geração de relatórios com Google Gemini. Construindo agentes RAG com LangChain + ChromaDB e OpenAI para classificação e busca semântica de chamados.</p>
+      <div class="pills">
+        <span class="pill a">Google Gemini</span><span class="pill a">OpenAI API</span>
+        <span class="pill a">RAG</span><span class="pill">LangChain</span>
+        <span class="pill">ChromaDB</span><span class="pill">Embeddings</span>
+        <span class="pill">Prompt engineering</span>
+      </div>
+    </div>
+
+    <div class="bi bi-to">
+      <div class="bic amb">⚙️</div>
+      <h3>Infraestrutura &amp; Deploy</h3>
+      <p>Deploy em produção com Railway, Supabase como backend-as-a-service, sync automático entre SQLite local e PostgreSQL na nuvem, Docker e GitHub para CI/CD.</p>
+      <div class="pills">
+        <span class="pill a">Railway</span><span class="pill a">Supabase</span>
+        <span class="pill">Docker</span><span class="pill">Git &amp; GitHub</span>
+        <span class="pill">Supabase Sync</span><span class="pill">Node.js</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════ PROJETOS REAIS ══════════════════════════ -->
+<section id="projetos" class="section">
+  <p class="ey fu">// Projetos em Produção</p>
+  <h2 class="st fu">O que já construí</h2>
+  <p class="sd fu">Sistemas reais, rodando em produção, com usuários reais.</p>
+
+  <div class="pg stg">
+
+    <div class="pc lv">
+      <div class="ch"><span class="ce">🧠</span><span class="cb bl">Em produção</span></div>
+      <h3>Nexus Monitoria IA</h3>
+      <p>Sistema completo de monitoria de qualidade para call center. Transcreve ligações automaticamente com Google Gemini 2.0 Flash, avalia o atendimento por critérios técnicos, gera rankings de operadores e sincroniza dados entre SQLite local e Supabase na nuvem.</p>
+      <div class="ct"><span>Python</span><span>Google Gemini</span><span>SQLite WAL</span><span>Supabase</span><span>FastAPI</span><span>Railway</span><span>JWT Auth</span></div>
+      <div class="csk">
+        <span class="sk">IA Generativa</span><span class="sk">Backend Python</span>
+        <span class="sk">Deploy Railway</span><span class="sk">Auth JWT</span>
+      </div>
+      <div class="cl"><a href="https://www.nexusmonitoriaai.com.br" target="_blank" rel="noopener" class="cla">↗ Ver ao vivo</a></div>
+    </div>
+
+    <div class="pc lv">
+      <div class="ch"><span class="ce">✂️</span><span class="cb bl">Em produção</span></div>
+      <h3>SaaS Barbearia</h3>
+      <p>Plataforma SaaS completa para gestão de barbearias com agendamento online, chatbot inteligente no WhatsApp (consulta disponibilidade real com Google Calendar), painel financeiro e multi-unidades com 3 níveis de acesso.</p>
+      <div class="ct"><span>Node.js</span><span>WhatsApp API</span><span>Google Calendar</span><span>Railway</span><span>HTML/CSS/JS</span></div>
+      <div class="csk">
+        <span class="sk">APIs</span><span class="sk">Chatbot IA</span>
+        <span class="sk">Multi-tenant</span><span class="sk">SaaS</span>
+      </div>
+      <div class="cl"><a href="https://github.com/AlexGamboaJr/Saas-Barbearia" target="_blank" rel="noopener" class="cla">↗ GitHub</a></div>
+    </div>
+
+    <div class="pc at">
+      <div class="ch"><span class="ce">⚙️</span><span class="cb bl">Em uso diário</span></div>
+      <h3>Suite de Automações Python</h3>
+      <p>Conjunto de scripts para operações de cobrança e call center: enriquecimento de dados de clientes, importações automáticas de discadores 3C Plus, geração de relatórios e integração com APIs de parceiros como CobMais e VMK.</p>
+      <div class="ct"><span>Python</span><span>Pandas</span><span>REST APIs</span><span>3C Plus</span><span>Excel/CSV</span></div>
+      <div class="csk">
+        <span class="sk">ETL</span><span class="sk">Automação</span>
+        <span class="sk">Dados</span><span class="sk">Integrações</span>
+      </div>
+      <div class="cl"><a href="https://github.com/AlexGamboaJr" target="_blank" rel="noopener" class="cla">↗ GitHub</a></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════ ROADMAP ══════════════════════════ -->
+<section id="roadmap" class="section">
+  <p class="ey fu">// Roadmap</p>
+  <h2 class="st fu">Próximos projetos</h2>
+  <p class="sd fu">5 projetos que estou construindo para conquistar vagas Python + IA pagando R$ 5k+. Cada um demonstra uma competência-chave do mercado.</p>
+
+  <div class="pg stg">
+
+    <div class="pc pl">
+      <div class="ch"><span class="ce">💬</span><span class="cb ba2">⭐⭐⭐⭐⭐</span></div>
+      <h3>Chatbot IA para WhatsApp</h3>
+      <p>Chatbot inteligente que responde automaticamente, consulta FAQs em PDFs via RAG e salva histórico em banco. Integração com OpenAI API e Twilio — IA Generativa aplicada a negócios reais.</p>
+      <div class="ct"><span>Python</span><span>FastAPI</span><span>OpenAI API</span><span>Twilio</span><span>Docker</span></div>
+      <div class="csk"><span class="sk">IA Generativa</span><span class="sk">APIs</span><span class="sk">Backend</span><span class="sk">Python</span></div>
+      <div class="cl"><span class="clm">📂 em breve</span></div>
+    </div>
+
+    <div class="pc pl">
+      <div class="ch"><span class="ce">💈</span><span class="cb bl">Publicado</span></div>
+      <h3>Heldão Barbershop</h3>
+      <p>Sistema de agendamento completo com login seguro, cadastro de clientes, gestão de serviços e histórico de agendamentos. CRUD completo com banco de dados relacional SQLite/PostgreSQL.</p>
+      <div class="ct"><span>Python</span><span>FastAPI</span><span>SQLAlchemy</span><span>SQLite</span><span>JWT</span></div>
+      <div class="csk"><span class="sk">CRUD</span><span class="sk">SQL</span><span class="sk">Backend</span><span class="sk">Auth</span></div>
+      <div class="cl"><a href="https://github.com/AlexGamboaJr/heldao-barbershop" target="_blank" rel="noopener" class="cla">↗ GitHub</a></div>
+    </div>
+
+    <div class="pc pl">
+      <div class="ch"><span class="ce">📊</span><span class="cb bl">Publicado</span></div>
+      <h3>Pipeline ETL + Dashboard</h3>
+      <p>Pipeline de dados completo: leitura de CSVs, limpeza com Pandas, cálculo de KPIs e dashboard interativo com Streamlit e Plotly. Dataset real de call center com métricas de operação.</p>
+      <div class="ct"><span>Python</span><span>Pandas</span><span>SQLite</span><span>Streamlit</span><span>Plotly</span></div>
+      <div class="csk"><span class="sk">ETL</span><span class="sk">Pandas</span><span class="sk">SQL</span><span class="sk">Dashboard</span></div>
+      <div class="cl"><a href="https://github.com/AlexGamboaJr/data-pipeline-dashboard" target="_blank" rel="noopener" class="cla">↗ GitHub</a></div>
+    </div>
+
+    <div class="pc pl">
+      <div class="ch"><span class="ce">🔍</span><span class="cb bl">Publicado</span></div>
+      <h3>Agente IA para Chamados</h3>
+      <p>Agente inteligente que classifica chamados de suporte, sugere soluções automáticas e busca respostas similares via RAG com ChromaDB. Funciona com ou sem chave OpenAI.</p>
+      <div class="ct"><span>FastAPI</span><span>ChromaDB</span><span>OpenAI API</span><span>RAG</span><span>Docker</span></div>
+      <div class="csk"><span class="sk">RAG</span><span class="sk">LLM</span><span class="sk">Vetores</span><span class="sk">IA aplicada</span></div>
+      <div class="cl"><a href="https://github.com/AlexGamboaJr/ai-ticket-agent" target="_blank" rel="noopener" class="cla">↗ GitHub</a></div>
+    </div>
+
+    <div class="pc pl">
+      <div class="ch"><span class="ce">⚡</span><span class="cb bl">Publicado</span></div>
+      <h3>API REST Completa</h3>
+      <p>API profissional com FastAPI, autenticação JWT completa, CRUD de usuários e produtos, validação com Pydantic v2, documentação automática OpenAPI e containerização com Docker.</p>
+      <div class="ct"><span>FastAPI</span><span>SQLAlchemy</span><span>SQLite</span><span>Docker</span><span>JWT</span></div>
+      <div class="csk"><span class="sk">APIs</span><span class="sk">Backend</span><span class="sk">Banco de dados</span><span class="sk">Docker</span></div>
+      <div class="cl"><a href="https://github.com/AlexGamboaJr/fastapi-rest-api" target="_blank" rel="noopener" class="cla">↗ GitHub</a></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════ DEMOS ══════════════════════════ -->
+<section id="demos" class="section">
+  <p class="ey fu">// Showcases Visuais</p>
+  <h2 class="st fu">Dashboard &amp; Interface demos</h2>
+  <p class="sd fu">Demonstrações das capacidades de UI que desenvolvo — Glassmorphism, dados em tempo real e interfaces interativas.</p>
+
+  <!-- Dashboard Glassmorphism -->
+  <div style="margin-bottom:3.5rem">
+    <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:.4rem;color:var(--mt)">📊 Dashboard Analytics — Glassmorphism</h3>
+    <p style="color:var(--dk);font-size:.83rem;margin-bottom:1.25rem">Nexus Monitoria IA — dados simulados em tempo real com Chart.js e backdrop-filter</p>
+    <div class="dd fu">
+      <div class="dg">
+        <div class="dc">
+          <div class="dm gp" style="background:var(--gp);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text" id="m1">2.847</div>
+          <div class="dml">Ligações avaliadas</div>
+          <div class="dmc">↑ +12.4% esse mês</div>
+        </div>
+        <div class="dc">
+          <div class="dm" style="background:linear-gradient(135deg,#06b6d4,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text" id="m2">87.3</div>
+          <div class="dml">Score médio de qualidade</div>
+          <div class="dmc">↑ +3.1 pts</div>
+        </div>
+        <div class="dc">
+          <div class="dm" style="background:var(--ge);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text" id="m3">94%</div>
+          <div class="dml">Precisão da IA</div>
+          <div class="dmc">↑ estável</div>
+        </div>
+        <div class="dc dca">
+          <h4>Score de qualidade — últimos 12 meses (Nexus Monitoria IA)</h4>
+          <canvas id="dashChart" height="70"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Smart Home Demo -->
+  <div>
+    <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:.4rem;color:var(--mt)">🏠 Smart Home — Interface Tátil</h3>
+    <p style="color:var(--dk);font-size:.83rem;margin-bottom:1.25rem">Controles com vidro fosco, iluminação interna e animações spring. O fundo muda dinamicamente conforme a interação.</p>
+    <div class="sh-demo fu" id="shDemo">
+      <div class="sh-grid">
+
+        <div class="sh-card">
+          <div class="sh-icon">💡</div>
+          <h4>Iluminação</h4>
+          <div class="sh-val" id="brightVal" style="background:var(--gp);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">75%</div>
+          <div class="sh-label">Brilho</div>
+          <input type="range" class="sh-slider" id="brightSlider" min="0" max="100" value="75">
+        </div>
+
+        <div class="sh-card">
+          <div class="sh-icon">🌡️</div>
+          <h4>Temperatura</h4>
+          <div class="sh-val" id="tempVal" style="background:linear-gradient(135deg,#06b6d4,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">22°C</div>
+          <div class="sh-label">Termostato</div>
+          <input type="range" class="sh-slider" id="tempSlider" min="16" max="30" value="22">
+        </div>
+
+        <div class="sh-card">
+          <div class="sh-icon" id="secIcon">🔒</div>
+          <h4>Segurança</h4>
+          <div class="sh-val" id="secVal" style="color:var(--em)">Ativa</div>
+          <div class="sh-label">Sistema de alarme</div>
+          <div class="sh-toggle">
+            <div class="toggle-btn on" id="secToggle"></div>
+            <div class="sh-status" id="secStatus">Sistema ativado</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ TECH STACK ══════════════════════════ -->
+<section class="section">
+  <p class="ey fu">// Tecnologias</p>
+  <h2 class="st fu">Stack completo</h2>
+  <p class="sd fu">Ferramentas que uso em projetos reais — não só da faculdade.</p>
+
+  <div class="tg stg">
+    <div class="ti"><div class="ico">🐍</div><div class="nm">Python</div></div>
+    <div class="ti"><div class="ico">⚡</div><div class="nm">FastAPI</div></div>
+    <div class="ti"><div class="ico">🤖</div><div class="nm">Gemini AI</div></div>
+    <div class="ti"><div class="ico">🧠</div><div class="nm">OpenAI</div></div>
+    <div class="ti"><div class="ico">🦜</div><div class="nm">LangChain</div></div>
+    <div class="ti"><div class="ico">📊</div><div class="nm">Pandas</div></div>
+    <div class="ti"><div class="ico">🗄️</div><div class="nm">PostgreSQL</div></div>
+    <div class="ti"><div class="ico">💾</div><div class="nm">SQLite</div></div>
+    <div class="ti"><div class="ico">☁️</div><div class="nm">Supabase</div></div>
+    <div class="ti"><div class="ico">🚂</div><div class="nm">Railway</div></div>
+    <div class="ti"><div class="ico">🐳</div><div class="nm">Docker</div></div>
+    <div class="ti"><div class="ico">📱</div><div class="nm">WhatsApp API</div></div>
+    <div class="ti"><div class="ico">📅</div><div class="nm">Google Calendar</div></div>
+    <div class="ti"><div class="ico">🟨</div><div class="nm">JavaScript</div></div>
+    <div class="ti"><div class="ico">🟢</div><div class="nm">Node.js</div></div>
+    <div class="ti"><div class="ico">📈</div><div class="nm">Power BI</div></div>
+    <div class="ti"><div class="ico">🔐</div><div class="nm">JWT / Auth</div></div>
+    <div class="ti"><div class="ico">🐙</div><div class="nm">GitHub</div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ GITHUB ══════════════════════════ -->
+<section class="section">
+  <p class="ey fu">// GitHub</p>
+  <h2 class="st fu">Estrutura de repositórios</h2>
+  <p class="sd fu">Todos os projetos organizados por tecnologia e finalidade.</p>
+
+  <div class="ghr stg">
+    <div class="rp"><div class="rn">📂 nexus-monitoria-ia</div><div class="rd">Sistema de monitoria com IA para call center</div><div class="rl"><span class="ld" style="background:#3572A5"></span>Python</div></div>
+    <a class="rp" href="https://github.com/AlexGamboaJr/Saas-Barbearia" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block"><div class="rn">📂 Saas-Barbearia</div><div class="rd">Plataforma SaaS para gestão de barbearias</div><div class="rl"><span class="ld" style="background:#f1e05a"></span>JavaScript</div></a>
+    <div class="rp"><div class="rn">📂 automacoes-python</div><div class="rd">Suite de automações para cobrança e call center</div><div class="rl"><span class="ld" style="background:#3572A5"></span>Python</div></div>
+    <div class="rp"><div class="rn">📂 ai-whatsapp-chatbot</div><div class="rd">Chatbot IA com FastAPI + OpenAI + Twilio</div><div class="rl"><span class="ld" style="background:#3572A5"></span>Python</div></div>
+    <a class="rp" href="https://github.com/AlexGamboaJr/heldao-barbershop" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block"><div class="rn">📂 heldao-barbershop</div><div class="rd">Agendamento com FastAPI + PostgreSQL</div><div class="rl"><span class="ld" style="background:#3572A5"></span>Python</div></a>
+    <a class="rp" href="https://github.com/AlexGamboaJr/data-pipeline-dashboard" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block"><div class="rn">📂 data-pipeline-dashboard</div><div class="rd">ETL com Pandas + SQL + Power BI</div><div class="rl"><span class="ld" style="background:#3572A5"></span>Python</div></a>
+    <a class="rp" href="https://github.com/AlexGamboaJr/ai-ticket-agent" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block"><div class="rn">📂 ai-ticket-agent</div><div class="rd">Agente RAG com LangChain + ChromaDB</div><div class="rl"><span class="ld" style="background:#3572A5"></span>Python</div></a>
+    <a class="rp" href="https://github.com/AlexGamboaJr/fastapi-rest-api" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block"><div class="rn">📂 fastapi-rest-api</div><div class="rd">API REST completa com Docker + JWT</div><div class="rl"><span class="ld" style="background:#3572A5"></span>Python</div></a>
+    <a class="rp" href="https://github.com/AlexGamboaJr/portfolio" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block"><div class="rn">📂 portfolio</div><div class="rd">Portfólio pessoal — Three.js, Glassmorphism, Bento Grid</div><div class="rl"><span class="ld" style="background:#e34c26"></span>HTML</div></a>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CONTATO ══════════════════════════ -->
+<section id="contato" class="section">
+  <div class="cbx fu">
+    <h2>Vamos trabalhar juntos?</h2>
+    <p>Disponível para vagas CLT, PJ ou projetos freelance em Python, IA e automações. Respondo rápido.</p>
+    <div class="cl2">
+      <a href="mailto:alexsandrojgj83@gmail.com" class="bg">📧 alexsandrojgj83@gmail.com</a>
+      <a href="https://github.com/AlexGamboaJr" target="_blank" rel="noopener" class="bo">GitHub</a>
+      <a href="https://www.nexusmonitoriaai.com.br" target="_blank" rel="noopener" class="bo">Projeto live</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Alex Gamboa Junior &middot; Engenharia de Software &middot; Python &amp; IA Developer</p>
+</footer>
+
+<!-- ══════════════════════════ SCRIPTS ══════════════════════════ -->
+<script>
+/* ─── THREE.JS — PARTICLE SPHERE ─── */
+(function(){
+  var mobile = window.innerWidth < 768;
+  var N = mobile ? 2000 : 5000;
+  var scene = new THREE.Scene();
+  var W = window.innerWidth, H = window.innerHeight;
+  var cam = new THREE.PerspectiveCamera(70, W/H, 0.1, 1000);
+  cam.position.z = 3.5;
+  var ren = new THREE.WebGLRenderer({canvas:document.getElementById('cv'),alpha:true,antialias:!mobile});
+  ren.setSize(W,H);
+  ren.setPixelRatio(Math.min(devicePixelRatio,2));
+
+  var pos = new Float32Array(N*3);
+  var col = new Float32Array(N*3);
+  var phi = Math.PI*(3-Math.sqrt(5));
+
+  for(var i=0;i<N;i++){
+    var y = 1-(i/(N-1))*2;
+    var r = Math.sqrt(Math.max(0,1-y*y));
+    var th = phi*i;
+    var R = 1.6 + (Math.random()-.5)*.35;
+    pos[i*3]   = Math.cos(th)*r*R;
+    pos[i*3+1] = y*R;
+    pos[i*3+2] = Math.sin(th)*r*R;
+    var t=(y+1)/2;
+    col[i*3]  = .04+t*.35;
+    col[i*3+1]= .25+t*.65;
+    col[i*3+2]= .8+t*.2;
+  }
+
+  var geo = new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+  var mat = new THREE.PointsMaterial({size:.012,vertexColors:true,transparent:true,opacity:.75,sizeAttenuation:true});
+  var pts = new THREE.Points(geo,mat);
+  scene.add(pts);
+
+  var mx=0, my=0;
+  document.addEventListener('mousemove',function(e){mx=(e.clientX/W-.5)*2;my=-(e.clientY/H-.5)*2;});
+  document.addEventListener('touchmove',function(e){var t=e.touches[0];mx=(t.clientX/W-.5)*2;my=-(t.clientY/H-.5)*2;},{passive:true});
+
+  function tick(){
+    requestAnimationFrame(tick);
+    pts.rotation.y += .0007 + mx*.0008;
+    pts.rotation.x += .0003 + my*.0006;
+    ren.render(scene,cam);
+  }
+  tick();
+
+  window.addEventListener('resize',function(){
+    W=window.innerWidth;H=window.innerHeight;
+    cam.aspect=W/H;cam.updateProjectionMatrix();
+    ren.setSize(W,H);
+  });
+})();
+
+/* ─── CHART.JS — DASHBOARD ─── */
+(function(){
+  var ctx=document.getElementById('dashChart').getContext('2d');
+  var months=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var scores=[78,81,80,84,83,86,85,88,87,89,88,91];
+  var g=ctx.createLinearGradient(0,0,0,180);
+  g.addColorStop(0,'rgba(99,102,241,.38)');
+  g.addColorStop(1,'rgba(99,102,241,.02)');
+  new Chart(ctx,{
+    type:'line',
+    data:{labels:months,datasets:[{
+      label:'Score médio',data:scores,
+      borderColor:'#6366f1',backgroundColor:g,
+      borderWidth:2.5,pointBackgroundColor:'#6366f1',
+      pointBorderColor:'#07070f',pointBorderWidth:2,
+      pointRadius:4,tension:.4,fill:true
+    }]},
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(10,10,22,.92)',
+          borderColor:'rgba(99,102,241,.3)',borderWidth:1,
+          titleColor:'#f1f5f9',bodyColor:'#94a3b8',padding:12
+        }
+      },
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#475569',font:{size:11}}},
+        y:{min:70,max:100,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#475569',font:{size:11}}}
+      },
+      animation:{duration:1800,easing:'easeInOutQuart'}
+    }
+  });
+
+  /* live pulse */
+  setInterval(function(){
+    var el=document.getElementById('m1');
+    if(el){el.style.opacity='.5';setTimeout(function(){el.style.opacity='1';},400);}
+  },3500);
+})();
+
+/* ─── SMART HOME DEMO ─── */
+(function(){
+  var demo=document.getElementById('shDemo');
+  var bSlider=document.getElementById('brightSlider');
+  var bVal=document.getElementById('brightVal');
+  var tSlider=document.getElementById('tempSlider');
+  var tVal=document.getElementById('tempVal');
+  var secToggle=document.getElementById('secToggle');
+  var secVal=document.getElementById('secVal');
+  var secStatus=document.getElementById('secStatus');
+  var secIcon=document.getElementById('secIcon');
+  var secOn=true;
+
+  function updateBg(){
+    var b=parseInt(bSlider.value)/100;
+    var t=(parseInt(tSlider.value)-16)/(30-16);
+    var r=Math.round(t*30+(1-t)*5);
+    var g=Math.round(5+b*10);
+    var bl=Math.round((1-t)*25+t*5+b*5);
+    demo.style.background='rgba('+r+','+g+','+bl+',.95)';
+  }
+
+  bSlider.addEventListener('input',function(){
+    bVal.textContent=this.value+'%';
+    updateBg();
+  });
+
+  tSlider.addEventListener('input',function(){
+    tVal.textContent=this.value+'°C';
+    var t=(this.value-16)/(30-16);
+    var c1='rgb('+Math.round(6+t*220)+','+Math.round(182-t*70)+','+Math.round(212-t*170)+')';
+    tVal.style.webkitTextFillColor=c1;
+    tVal.style.color=c1;
+    tVal.style.background='none';
+    tVal.style.webkitBackgroundClip='unset';
+    updateBg();
+  });
+
+  secToggle.addEventListener('click',function(){
+    secOn=!secOn;
+    secToggle.classList.toggle('on',secOn);
+    secVal.textContent=secOn?'Ativa':'Desativada';
+    secVal.style.color=secOn?'var(--em)':'var(--dk)';
+    secStatus.textContent=secOn?'Sistema ativado':'Sistema desativado';
+    secIcon.textContent=secOn?'🔒':'🔓';
+  });
+})();
+
+/* ─── INTERSECTION OBSERVER — FADE ANIMATIONS ─── */
+(function(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vs');});
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fu,.fl,.stg').forEach(function(el){obs.observe(el);});
+})();
+</script>
+</body>
+</html>
